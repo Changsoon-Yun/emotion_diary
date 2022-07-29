@@ -1,10 +1,10 @@
-import './App.css';
-import {BrowserRouter, Link, Route, Routes} from "react-router-dom";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Home from './pages/Home'
 import New from './pages/New'
 import Edit from './pages/Edit'
 import Diary from './pages/Diary'
 import React, {useReducer, useRef} from "react";
+import './App.css';
 
 const reducer = (state, action) => {
   let newState = [];
@@ -70,18 +70,19 @@ function App() {
 
   const [data, dispatch] = useReducer(reducer, dummyData)
 
-  const dataId = useRef(0)
+  const dataId = useRef(6)
 
   //Create
   const onCreate = (date, content, emotion) => {
     dispatch({
-      type: "CREATE", data: {
+      type: "CREATE",
+      data: [{
         id: dataId.current,
-        date: new Date(date).getTime,
+        date: new Date(date).getTime(),
         content,
-        emotion
-      }
-    })
+        emotion,
+      },
+    ]})
     dataId.current += 1
   }
 
@@ -96,7 +97,7 @@ function App() {
       type: "EDIT",
       data: {
         id: targetId,
-        tate: new Date(date).getTime(),
+        date: new Date(date).getTime(),
         content,
         emotion
       }
@@ -110,7 +111,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home/>}/>
               <Route path="/new" element={<New/>}/>
-              <Route path="/edit" element={<Edit/>}/>
+              <Route path="/edit/:id" element={<Edit/>}/>
               <Route path="/diary/:id" element={<Diary/>}/>
               <Route path="/diary/" element={<Diary/>}/>
             </Routes>
